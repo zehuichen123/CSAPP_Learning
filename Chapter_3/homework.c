@@ -64,8 +64,79 @@ long 5*x+2*y+8*z;
 5) 0x0
 6) 0xFD
 3.9
-
-
+注意点：对于移位操作，如果使用寄存器中的数作为immediate，那么必须是
+从%cl中取数，确保移位k数值的大小。
+shift_left_rightn:
+	movq %rdi,%rax //get x
+	salq $4,%rax   //x<<=4
+	movl %esi,%ecx //get n(4 bytes)
+	sarq %cl,%rax //x>>=n
+3.10
+long arith2(long x,long y,long z){
+	long t1=y|x;
+	long t2=t1>>3;
+	long t3=~t2;
+	long t4=z-t3;
+	return t4;
+}
+3.11
+1）将%rdx设置为0
+2）movq $0,%rdx
+3) oxrq版本需要3个字节，而使用movq需要7个字节
+// skip for multiply
+3.13
+这里需要注意通过set和test的特定类型进行进一步判断unsigned/signed.
+1)int
+2)short
+3)unsigned char
+4)long/unsigned long/某种指针
+3.14
+1）long
+2）short／unsigned short
+3）unsigned char
+4）int
+3.15
+这题考的就是pc-relative（PC相对寻址）至于到底是啥么玩意自己
+看书，用法这里提一下，其实jmp的最后地址就是jmp的最后一个byte
++jmp下一个语句的地址。
+1）0x4003fe
+2）0x400431
+3）0x400547
+4）这题我们读目标偏移量需要倒着读：
+0xffffff73=(10)-141
+故最后结果是0x400560
+3.16
+A.
+void cond(long a,long *p){
+	if(p&&a>*p){
+		goto elite;
+	}
+	return;
+elite:
+	*p=a;
+}
+B.
+因为if语句其实有两种情况，else 被省略了。
+3.17
+略（比较简单
+至于第二问，其实没有什么区别，只是前者比较写起来简单，少了一个else
+3.18
+这种题关键不能心态急
+long test(long x,long y,long z){
+	long val=x+y+z;
+	if(x<-3){
+		if(y>=z){
+			val=y*z;
+		}
+		else{
+			val=x*y;
+		}
+	}
+	else if(x>2){
+		val=x*z;
+	}
+	return val;
+}
 
 
 
