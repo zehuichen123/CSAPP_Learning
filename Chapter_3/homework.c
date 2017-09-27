@@ -7,7 +7,8 @@ movb $0xFF,%bl 0xFF和%bl都是一个byte
 movq （%rdx),%rax 应为8bytes
 3.3
 movb $0xF,(%ebx)
-error:can not use %ebx as address register(%ebx only have 32 bits,while address register needs 64)
+error:can not use %ebx as address register(%ebx only have 32 bits,
+while address register needs 64)
 movl %rax,(%rsp)
 error:needs movq
 movw (%rax),4(%rsp)
@@ -137,10 +138,176 @@ long test(long x,long y,long z){
 	}
 	return val;
 }
-
-
-
-
+3.19
+1）30
+2) 46
+3.20
+A)／ 取整操作
+B)  line1:先算出x+7
+    line2:对%rdi进行自&
+    line3:如果x为负数，就取x+7，为非负数取x
+    line4:对取的数算数右移3位，及／8
+3.21
+long test(long x,long y){
+	long val=8*x;
+	if(y>0){
+		if(x>=y){
+			val=y&x;
+		}
+		else{
+			val=y-x;
+		}
+	}
+	else if(y<=-2){
+		val=x+y;
+	}
+	return val;
+}
+3.22
+1）12
+2）20
+3.23
+A)
+x:%rdi
+y:%rcx
+n:%rdx
+B)
+*p解引用只有在*p++的时候用到，而这个++在x+=y时用到，
+故此时编译器直接在x+=y时多加一个1而不用额外保存p的值了
+C)
+line2:set x
+line3:set %rcx=x
+line4:set %rcx=x*x
+line5:set %rdx=x+x
+line7:set %rax=x*x+x+x+1
+line8:n--
+line9&10:check if n>0 
+3.24
+long loop_while(long a,long b){
+	long result=1;
+	while(a<b){
+		result*=(a+b);
+		a+=1;
+	}
+	return result;
+}
+3.25
+long loop_while(long a,long b){
+	long result=b;
+	while(b>0){
+		result=result*a;
+		b-=a;
+	}
+	return result;
+}
+3.26
+A)guarded-do
+B)
+long fun_a(unsigned long x){
+	long val=0;
+	while(x!=0){
+		val^=x;
+		x>>=1;
+	}
+	return val&0x1;
+}
+C)judge the 1s in x,odd return 0,even return 1.
+3.28
+A)
+long fun_b(unsigned long x){
+	long val=0;
+	long i;
+	for(i=64;i>=0;i--){
+		val=(val*2)+(x&1);
+		x>>=1;
+}
+B)
+because compiler has known that i==64>0,so it is
+unnecessary to check the value of i,thus do not have
+an check-jump sentence here.
+C)
+make a minor of x,reverse the x of 2 arithmetic.
+3.29
+A)
+the only check-jump sentence is at the top&&bottom
+of loop. But do not handle the continue case.
+B)
+put the goto in place of continue.
+3.30
+A)
+As the ja condition is judge if x+1>8;
+which means x max is up to 7,now we have
+9 quad.. In another words,the number of
+them can represent as:-1,0,1,2,4,5,7(for
+3 and 6 here have a .L2 quad, which 
+can be understund as default).
+B)
+.L5,.L7
+3.31
+void switcher(long a,long b,long c,long *dest){
+	long val;
+	switch(a){
+		case 5:{
+			c=b^15;
+			//fall through
+		}
+		case 0:{
+			val=c+112;
+			break;
+		}
+		case 2:
+		case 7:{
+			val=(c+b)<<2;
+			break;
+		}
+		default:{
+			val=b;
+		}
+		*dest=val;
+	}
+}
+3.32
+指令   %rdi.   %rsi.   %rax.  *%rsp
+lea.  10 		-   	-	0x400565
+sub.  10 		11 		- 	0x400565
+callq 9 		11 		-   0x400565
+movq  9 		11 		-   0x400555
+imulq 9 		11 		9 	0x400555
+retq  9 		11 		99  0x400565
+retq  9 		11 		99  0x400565
+mov   9 		11 		99 	   -
+3.33
+First,from %edi we can know that the First
+parameter is 4 bytes,which is undoubted int.
+And %rdx is long without any hesitation.Then
+from addb we can know that %rcx is char*. 
+But what is %sil?We can only know that complier
+extract 8 bits out but do not actually know 
+what the size of b.However, author told us 
+sizeof(a)+sizeof(b)=6.So, sizeof(b) is 2.
+SO b is short.
+3.34
+A)
+from line 10-15, we can see that a0,..,a5 are
+put into the registers respectively. 
+B)
+from line 16 and 18, we can see that a6 and a7
+are put into the stack at %rsp and %rsp+8 respectively.
+C)
+because we have used up all registers saved by
+callers. So we have to put the residual at stack.
+3.35
+A)
+the x each time rfun is called
+B)
+long rfun(unsigned long x){
+	if(x==0){
+		return 0;
+	}
+	unsigned long nx=x>>2;
+	long rv=rfun(nx);
+	return rv+x;
+}
 
 
 
