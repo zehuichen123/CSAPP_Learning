@@ -308,7 +308,33 @@ long rfun(unsigned long x){
 	long rv=rfun(nx);
 	return rv+x;
 }
-
-
+3.36
+table ignored
+3.37
+expression       dissembled code
+s+1 			 leal2(%rdx),%rax
+s[3] 			 movw6(%rdx),%ax
+&s[i] 			 leal(%rdx,%rcx,2),%rax
+s[4*i+1] 		 movw2(%rdx,%rcx,8),%ax
+s+i-5 			 leal-10(%rdx,%rcx,2),%rax
+/*attention:you need to multiply the size
+ of data with the constant.Do NOT forget*/
+3.38
+from dissembled code, we can easily conclude 
+that %rdi=i+5j and %rdx=7*i+j. So 5 and 7 are
+the correct answer for M and N.Attention:you 
+need to think it over which is M and which is N.
+(Answer:M=5,N=7)
+3.42
+A)
+long fun(struct ELE *ptr){
+	long sum=0;
+	while(ptr->v){
+		sum+=ptr->v;
+		ptr=ptr->p;
+	}
+}
+B)
+ignored
 
 	
