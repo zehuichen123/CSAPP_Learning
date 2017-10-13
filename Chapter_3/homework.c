@@ -336,5 +336,30 @@ long fun(struct ELE *ptr){
 }
 B)
 ignored
-
+3.44
+For this problem we should know that for every 
+data structure,its start address must be the 
+multiple of sizeof(this data structure).Consequencely,
+this leads to memory alignment.
+A.
+0-3,4-7,8-11,12-15(here we leave 3 bytes for the 
+last char data structure,because if we delcare like
+this: struct P1[4], that is awful because for the 
+second element ''s first int can not begin at the
+k multiple address.)
+B.C.D.E.ignored
+3.45
+A.B.54bytes(every element takes up 8 btyes)
+C.if we declare like this:
+struct p1{
+	char d;
+	char f;
+	short b;
+	int h;
+	long g;
+	double c;
+	char* a;
+	float e;
+}
+so we can get this struct with only 40 bytes.
 	
