@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-float a[100000000];
-float p[100000000];
-float a1[100000000];
-float p1[100000000];
+float a[1000000];
+float p[1000000];
+float a1[1000000];
+float p1[1000000];
 void psum1(float a[],float p[],long n){
     clock_t start,end;
     start=clock();
@@ -35,6 +35,6 @@ void psum2(float a[],float p[],long n){
     printf("psum2 is %lf\n", duration);
 }
 int main(void){
-    psum1(a1,p1,100000000);
-    psum2(a,p,100000000);
+    psum1(a1,p1,1000000);
+    psum2(a,p,1000000);
 }

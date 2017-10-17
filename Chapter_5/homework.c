@@ -49,3 +49,40 @@ A2:10/3=3.33
 A3:5/3=1.67
 A4:5/3=1.67
 A5:10/3=3.33
+5.9
+while(i1<n&&i2<n){
+	long temp1=src1[i1];
+	long temp2=src2[i2];
+	bool check=temp1>temp2;
+	dest[id++]=check?temp1:temp2;
+	i1+=check;
+	i2+=(1-check);
+}
+5.10
+A.Ignored
+B.Ignored
+C.Because they are data-related during this 
+iteration and next iteration. So you need to 
+excute each load and store finished before 
+you begin your next iteration.
+5.11
+Emmmm, for this problem, we need to use a 
+statistic provided by this book:the CPE of
+instant load and store excution is 7 T(
+including a + process which equals 1 T)
+Concretely, we have (7-1)+3(float addition 
+equals 3 T)=10 periods.
+5.12
+We can add a temp variable to avoid store 
+and load p[i] frequently. In this way, we 
+can easily let the adjancent iterations share
+non-related data.
+void psum1(float a[],float p[],long n){
+	long i;
+	p[0]=a[0];
+	long cre=p[0];
+	for(i=1;i<n;i++){
+		p[i]=cre+a[i];
+		cre+=a[i];
+	}
+}
