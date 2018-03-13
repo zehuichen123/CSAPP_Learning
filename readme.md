@@ -1,3 +1,5 @@
+# <i>Computer System - A Programmer's Perspective</i> Learning Notes
+
 ## Intro
 
 This is a repository for the book <i>Computer System- A Programmer's Perspective</i>. This book doesn't contains much code. However, I still record the code for my learning process. Most of them are assembled code, for Chapter3. Also, I added the labs for this book which is provided by CMU, with my own answers to these labs. Also, I've written some solutions and explanation to these labs. You can view these through links below.  
